@@ -12,7 +12,7 @@
 - `npm install` : Install all the packages installed in package.json file (dependencies).
 - `DEBUG=loc8r:* npm start` : Starts the server.
 
-# Wokring with Heroku!
+# Working with Heroku!
 
 - First create a dict called **engines** in the package.json file to tell heroku which platform our application is on and which version to use.
 
