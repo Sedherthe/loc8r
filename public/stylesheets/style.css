@@ -99,9 +99,6 @@ body {
 }
 
 footer {
-  position: fixed;
-  bottom: 0;
+  margin-top: 3em;
   border-top: 1px solid #469ea8;
-  margin-bottom: 4em;
-  text-align: center; 
 }
