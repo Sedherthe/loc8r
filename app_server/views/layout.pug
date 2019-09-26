@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title = title
+    title= title
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/all.min.css')
@@ -11,12 +11,12 @@ html
     nav.navbar.fixed-top.navbar-expand-md.navbar-light
       .container
         a.navbar-brand(href='/') Loc8r
-          button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarMain')
-            span.navbar-toggler-icon
-          #navbarMain.navbar-collapse.collapse
-        ul.navbar-nav.mr-auto
-          li.nav-item
-            a.nav-link(href='/about/') About
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarMain')
+          span.navbar-toggler-icon
+        #navbarMain.collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+            li.nav-item
+              a.nav-link(href='/about/') About
     .container
       block content
 
