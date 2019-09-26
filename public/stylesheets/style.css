@@ -73,6 +73,9 @@ h1 small {
 
 .facilities span.badge {
   margin-right: 2px;
+  font-family: 'Lobster';
+  font-weight: 20;
+  color: white;
 }
 
 p {
