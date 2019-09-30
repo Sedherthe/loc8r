@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .row.banner
+    .col-12
+     h1 Review Starcups
+  .row
+    .col-12.col-md-8
+      form(action='/location', method='get', role='form')
+        .row.form-group
+          label.col-10.col-sm-2.col-form.label(for="name") Name
+          .col-12
+            input#name.form-control(name="name")
+        .row.form-group
+          label.col-10.col-sm-2.col-form-label(for="rating") Rating
+          .col-12
+            input#rating.form-control(name="rating")
