@@ -49,7 +49,7 @@ You see it by using the following command: `heroku open`
 ### For manual connection
 
 - Get the connection string from mLab.
-- Run the command `heorku config:set MLAB)URL=mongodb://<dbuser>:<dbpassword>@ds229108.mlab.com:29108/locations` from root folder of you application. 
+- Run the command `heorku config:set MLAB-URI=mongodb://<dbuser>:<dbpassword>@ds229108.mlab.com:29108/locations` from root folder of you application. 
 - Don't forget to replace the dbuser and dbpassword with your credentials.
 
 # Working with Data
@@ -61,3 +61,4 @@ You see it by using the following command: `heroku open`
 - `mongo hostname:port/database_name -u username - password` : Use this command to connect the MongoDB shell to the remote database!
 
 - `heroku config:set NODE_ENV=production`: Also dont forget to set NODE_ENV variable on heroku to production so that the application will run in production mode on its server.
+
