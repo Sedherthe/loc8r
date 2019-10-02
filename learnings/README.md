@@ -34,3 +34,28 @@
 
 - Finally, everything is in place and the application is live on the internet!!!Hooray!
 You see it by using the following command: `heroku open`
+
+# Working with Mongo Shell
+
+- `show dbs` : Shows a list of all the lcoal MongoDB databases.
+- `use db_name` : This command allows us to use the database 'db_name'.
+- `show collections` : List of the collections of the connected database.
+- `db.collection_name.find()` : Querying through a collection.  
+- `db.collection_name.find().pretty()`: To prettify the MongoDB output.
+- `db.collection_name.save()`: This command directly creates the new collection along with adding data into the database when used for the first time.
+
+# Connecting mLab with Heroku
+
+### For manual connection
+
+- Get the connection string from mLab.
+- Run the command `heorku config:set MLAB)URL=mongodb://<dbuser>:<dbpassword>@ds229108.mlab.com:29108/locations` from root folder of you application. 
+- Don't forget to replace the dbuser and dbpassword with your credentials.
+
+# Working with Data
+
+- `mongodump -h localhost:27017 -d Loc8r` : Use this command to dump the data in the Loc8r database in the current directory from the terminal. A new folder called *dump* would be created after this.
+
+- `mongorestore -h <live_host_and_port> -d <live_database_name> -u <username_for_live_database> -p <user_password> <path_to_dump_directory>`: Use this command to push data to your live database.
+
+- `mongo hostname:port/database_name -u username - password` : Use this command to connect the MongoDB shell to the remote database!

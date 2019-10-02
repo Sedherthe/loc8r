@@ -20,7 +20,7 @@ const homelist = (req, res) => {
 			distance: '1 Km'
 		},
 		{
-		name: 'Pit Stop',
+			name: 'Pit Stop',
 			address: 'IIT Dharwad, Dharwad, Karnataka',
 			rating: 4,
 			facilities: ['Barbeque', 'Non-Veg', 'Wi-Fi'],
