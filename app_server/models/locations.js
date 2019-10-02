@@ -52,7 +52,7 @@ const locationSchema = new mongoose.Schema({
 	address: String,
 	rating: {
 		type: Number,
-		'default': 0 //Default need not be in strings, but since its keyword.
+		'default': 0, //Default need not be in strings, but since its keyword.
 		min: 0,
 		max: 5,
 	},
@@ -68,6 +68,6 @@ locationSchema.index({coords: '2dshphere'});
 
 //Compiling the schema into a model!
 // Model Name, Schema to use, and collection name(opt)
-mongoose.model('Location', 'locationSchema');
+mongoose.model('Location', locationSchema);
 
 

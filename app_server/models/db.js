@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
 require('./locations.js');
 
-const dbURL = 'mongodb://localhost/Loc8r';
+let dbURI = 'mongodb://localhost/Loc8r';
+if (process.env.NODE_ENV==='production'){
+	dbURI = process.env.MONGODB_URI;
+}
 //Second arg tells it to use its own new url parser
-mongoose.connect(dbURL, {useNewUrlParser: true});
+mongoose.connect(dbURI, {useNewUrlParser: true});
 
 //Monitoring the connection with mongoose.
 mongoose.connection.on('connected', () => {
-	console.log(`Mongoose connected to ${dbURL}`);
+	console.log(`Mongoose connected to ${dbURI}`);
 });
 mongoose.connection.on('error', () => {
 	console.log('Mongoose connection error: ', err);

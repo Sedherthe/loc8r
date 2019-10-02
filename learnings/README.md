@@ -59,3 +59,5 @@ You see it by using the following command: `heroku open`
 - `mongorestore -h <live_host_and_port> -d <live_database_name> -u <username_for_live_database> -p <user_password> <path_to_dump_directory>`: Use this command to push data to your live database.
 
 - `mongo hostname:port/database_name -u username - password` : Use this command to connect the MongoDB shell to the remote database!
+
+- `heroku config:set NODE_ENV=production`: Also dont forget to set NODE_ENV variable on heroku to production so that the application will run in production mode on its server.
