@@ -31,7 +31,17 @@ const locationsReadOne = (req, res) => {
 	Loc
 		.findById(loc_id)
 		.exec((err, location) => {
-			console.log("findById complete");
+			if(!location){
+				return res
+					.status(404)
+					.json({
+						"message": "Location not Found"
+					});
+			} else if (err) {
+				return res
+					.status(404)
+					.json(err);
+			}
 			res
 				.status(200)
 				.json(location);
