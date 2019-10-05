@@ -23,8 +23,12 @@ const reviewsReadOne = (req, res) => {
 					.status(404)
 					.json(err);
 			}
+			console.log("reviews are: ");
+			console.log(location.reviews);
+			console.log(location.reviews.id('5d94be88ab239aa52fd1376a'));
 			if(location.reviews && location.reviews.length > 0){
-				const review = location.reviews.id(req.params.reviewsid);
+				const review = location.reviews.id(req.params.reviewid);
+				console.log(review);
 				if(!review){
 					return res
 						.status(400)

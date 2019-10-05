@@ -3,14 +3,62 @@ const mongoose = require('mongoose');
 const Loc = mongoose.model('Location'); // Name of the dbase.
 
 // For listing the locaitons by distance
-const locationsListByDistance = (req, res) => {
-	const content = {
+const locationsListByDistance = async (req, res) => {
+	/*const content = {
 		"status" : "successful get request!",
 	};
 
 	res
 		.status(200)
-		.json(content);
+		.json(content);*/
+
+	console.log("Came after response");
+
+	const lng = parseFloat(req.query.lng);
+	const lat = parseFloat(req.query.lat);
+
+	console.log(lng, lat);
+
+	const near = {
+		type: "Point",
+		coordinates: [lng, lat]
+	};
+
+	const geoOptions = {
+		distanceField: "distance",
+		spherical: true,
+		maxDistance: 20000,
+		limit: 10
+	};
+	try{
+		const results = await Loc.aggregate([
+				{
+					$geoNear: {
+						near,
+						geoOptions
+					}
+				}
+			]);
+		const locations = results.map(result => {
+			// We don't need opening times and coords in the 
+			// locations list view.
+			return {
+				id: result._id,
+				name: result.name,
+				address: result.address,
+				rating: result.rating,
+				facilities: result.facilities,
+				//distance: `${result.distance.calculated.toFixed()}m`
+			}
+		});
+
+		return res
+			.status(200)
+			.json(locations);
+
+	} catch (err){
+		console.log(err);
+	}
 };
 
 // For adding a new location!
