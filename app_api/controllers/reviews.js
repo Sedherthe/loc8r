@@ -3,7 +3,90 @@ const Loc = mongoose.model('Location');
 
 // For adding a new review
 const reviewsCreate = (req, res) => {
+	console.log("In the reviews create function");
+	const lid = req.params.locationid;
+	console.log(lid);
+	
+	Loc
+		.findById(lid)
+		.exec((err, location) => {
+			if(err){
+				return res
+					.status(404)
+					.json(err)
+			}else if(!location){
+				return res
+					.status(404)
+					.json({
+						"message" : "Location Not Found"
+					});
+			} else {
+				// Calling another function for adding rev.
+				doAddReview(req, res, location);
+			}
+		});
+};
 
+const doAddReview = (req, res, location) => {
+	const {author, rating, reviewText} = req.body;
+	console.log(req.body);
+	console.log("before pushing: ", location.reviews);
+	location.reviews.push({
+		author,
+		rating,
+		reviewText
+	});
+	console.log("after pushing: ", location.reviews);
+	location.save((err, location) => {
+		if(err){
+			return res
+				.status(400)
+				.json(err)
+		} else{
+			console.log("Location id is: ", location._id);
+			updateAverageRating(location._id);
+			console.log(location.reviews.slice[-1], "sliced review");
+			const thisReview = location.reviews.slice(-1).pop();
+			return res
+				.status(201)
+				.json(thisReview);
+		}
+	});
+};
+
+const updateAverageRating = (id) => {
+	Loc
+		.findById(id)
+		.exec((err, location) => {
+			if(err){
+				return res
+					.status(400)
+					.json(err)
+			}else {
+				doSetAverageRating(location);
+			}
+		});
+};
+
+const doSetAverageRating = (location) => {
+	if (location.reviews && location.reviews.length > 0){
+		const count = location.reviews.length;
+		const total = location.reviews.reduce((tot, review) => {
+			console.log("Review rating is: ", review.rating, tot);
+			return tot + review.rating;
+		}, 0);
+
+		location.rating = parseInt(total/count, 10);
+		location.save((err, location) => {
+			if(err){
+				return res
+					.status(400)
+					.json(err);
+			} else {
+				console.log(`Average rating updated to ${location.rating}`);
+			}
+		});
+	}
 };
 
 //For reading one review 
@@ -46,7 +129,7 @@ const reviewsReadOne = (req, res) => {
 					};
 					res
 						.status(200)
-						.json(location);
+						.json(response);
 				}
 			} else {
 				return res

@@ -64,7 +64,7 @@ const locationSchema = new mongoose.Schema({
 	openingTimes: [openingTimeSchema], //Each subdoc in arr has uniq id.
 	reviews: [reviewSchema],
 });
-locationSchema.index({coords: '2dshphere'});
+locationSchema.index({coords: '2dsphere'});
 
 //Compiling the schema into a model!
 // Model Name, Schema to use, and collection name(opt)
