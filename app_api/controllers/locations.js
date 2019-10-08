@@ -140,12 +140,85 @@ const locationsReadOne = (req, res) => {
 
 //For updating one location as wanted by user.
 const locationsUpdateOne = (req, res) => {
+	if(!req.params.locationid){
+		return res
+			.status(404)
+			.json({
+				"message" : "Not found, locationid is required"
+			});
+	}
+	Loc
+		.findById(req.locationid)
+		.select('-reviews -rating')
+		.exec((err, location) => {
+			if(err){
+				return res
+					.status(400)
+					.json(err)
+			} else if(!location){
+				return res
+					.status(404)
+					.json({
+						"message": "locationid not found"
+					});
+			}
+			location.name = req.body.name;
+			location.address = req.body.address;
+			location.facilities = req.body.facilities.split(',');
+			location.coords = {
+				type: "Point",
+				[
+					parseFloat(req.body.lng),
+					parseFloat(req.body.lat)
+				]
+			};
+			location.openingTimes = [
+				{
+					days : req.body.days,
+					opening: req.body.opening,
+					closing: req.body.closing,
+					closed: req.body.closed
+				},
+			];
+			location.save((err, loc) => {
+				if(err){
+					return res
+						.status(404)
+						.json(err)
+				} else {
+					return res
+						.status(200)
+						.json(loc)
+				}
+			});
 
+		});
 };
 
 //For deleting the location as wanted by user.
 const locationsDeleteOne = (req, res) => {
-
+	const locationid = req.params.locationid;
+	if(!locationid){
+		return res
+			.status(404)
+			.json({
+				"message" : "No location :("
+			})
+	} else {
+		Loc
+			.findByIdAndRemove(locationid)
+			.exec((err, loc) => {
+				if(err){
+					return res
+						.status(404)
+						.json(err);
+				} else {
+					return res
+						.status(204)
+						.json(null);
+				}
+			});
+	}
 };
 
 module.exports = {

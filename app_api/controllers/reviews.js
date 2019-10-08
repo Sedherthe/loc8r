@@ -144,12 +144,121 @@ const reviewsReadOne = (req, res) => {
 
 //For updating one review 
 const reviewsUpdateOne = (req, res) => {
+	if(!req.params.loationid || !req.params.reviewid){
+		return res
+			.status(404)
+			.json({
+				"message" : "Not found, locationid and reviewid are both required"
+			});
+	}
+	Loc
+		.findById(locationid)
+		.select('reviews')
+		.exec((err, loc) => {
+			if(err){
+				return res
+					.status(400)
+					.json(err)
+			} else if(!loc) {
+				return res
+					.status(404)
+					.json({
+						"message" : "No location found :("
+					});
+			} 
+			if(loc.reviews && loc.reviews.length > 0) {
+				thisReview = loc.reviews.id(reviewid);
+				if(!thisReview){
+					return res
+						.status(404)
+						.json({
+							"message": "Review not found :("
+						});
+				} else {
+					thisReview.author = req.body.author;
+					thisReview.rating = req.body.rating;
+					thisReview.reviewText = req.body.reviewText;
 
+					loc.save((err, location) => {
+						if(err){
+							return res
+								.status(400)
+								.json(err)
+						} else {
+							updateAverageRating(loc._id);
+							return res
+								.status(200)
+								.json(thisReview);
+						}
+					});
+				}
+			} else {
+				return res
+					.status(404)
+					.json({
+						"message" : "No review to Update."
+					});
+			}
+		});//end of exec
 };
 
 // For deleting one review
 const reviewsDeleteOne = (req, res) => {
+	const locationid = req.params.locationid;
+	const reviewid = req.params.reviewid;
 
+	if(!locationid || !reviewid){
+		return res
+			.status(404)
+			.json({
+				"message" : " Not found, locationid and reviewid are both required"
+			});
+	}
+	Loc
+		.findById(locationid)
+		.select('reviews')
+		.exec((err, loc) => {
+			if(err){
+				return res
+					.status(400)
+					.json(err);
+			} else if(!loc){
+				return res
+					.status(404)
+					.json({
+						"message" : "No Location found :("
+					});
+			}
+			if(loc.reviews && loc.reviews.length > 0){
+				if(!loc.reviews.id(reviewid)){
+					return res
+						.status(404)
+						.json({
+							"message" : "No review found :("
+						});
+				} else {
+					loc.reviews.id(reviewid).remove();
+					loc.save((err, location) => {
+						if(err){
+							return res
+								.status(404)
+								.json(err);
+						} else {
+							updateAverageRating(loc._id);
+							return res
+								.state(204)
+								.json(null);
+						}
+					});
+				}
+			} else {
+				return res
+					.status(404)
+					.json({
+						"message" : "No review to delete :p"
+					});
+			}
+		});
 };
 
 module.exports = {
