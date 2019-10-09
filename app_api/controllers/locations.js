@@ -13,7 +13,10 @@ const locationsListByDistance = async (req, res) => {
 		.json(content);*/
 
 	console.log("Came after response");
-
+	let maxDist = parseInt(req.query.maxDistance);
+	if(!maxDist){
+		maxDist = 80000;
+	}
 	const lng = parseFloat(req.query.lng);
 	const lat = parseFloat(req.query.lat);
 
@@ -36,7 +39,7 @@ const locationsListByDistance = async (req, res) => {
 
 		spherical: true,
 		distanceField : "distance.calculated",
-		maxDistance: 80000,
+		maxDistance: maxDist,
 		//limit: 10
 	};	
 	try{
@@ -63,7 +66,7 @@ const locationsListByDistance = async (req, res) => {
 				address: result.address,
 				rating: result.rating,
 				facilities: result.facilities,
-				distance: `${result.distance.calculated.toFixed()}m`
+				distance: `${result.distance.calculated.toFixed()}`
 			}
 		});
 		console.log(locations);
@@ -167,7 +170,7 @@ const locationsUpdateOne = (req, res) => {
 			location.facilities = req.body.facilities.split(',');
 			location.coords = {
 				type: "Point",
-				[
+				coordinates : [
 					parseFloat(req.body.lng),
 					parseFloat(req.body.lat)
 				]
