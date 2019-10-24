@@ -21,12 +21,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+console.log("Checking before index routing");
 app.use('/', indexRouter);
+console.log("Checking after index routing.");
 app.use('/api', apiRouter);
 //app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+	//console.log("create error", req, res);
   next(createError(404));
 });
 

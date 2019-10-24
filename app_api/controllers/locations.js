@@ -135,6 +135,7 @@ const locationsReadOne = (req, res) => {
 					.status(404)
 					.json(err);
 			}
+			console.log("The loc is: ", location);
 			res
 				.status(200)
 				.json(location);

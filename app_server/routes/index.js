@@ -10,9 +10,11 @@ var router = express.Router();
 
 /* Locations page */
 router.get('/', ctrlLocations.homelist); // List of locations.
-router.get('/location', ctrlLocations.locationInfo);
-router.get('/location/review/new', ctrlLocations.addReview);
-
+router.get('/location/:locationid', ctrlLocations.locationInfo);
+router
+	.route('/location/:locationid/review/new')
+	.get(ctrlLocations.addReview)
+	.post(ctrlLocations.doAddReview);
 /* Others page */
 router.get('/about', ctrlOthers.about);
 
