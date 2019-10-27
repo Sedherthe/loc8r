@@ -62,3 +62,11 @@ You see it by using the following command: `heroku open`
 
 - `heroku config:set NODE_ENV=production`: Also dont forget to set NODE_ENV variable on heroku to production so that the application will run in production mode on its server.
 
+# Angular
+
+- ng help : Run this command to see the various options available while starting a project.
+	- --skipGit : To skip the default Git initialization and first commit.By default, ng new initialized the folder as a Git repo.
+	- --skipTests : To skip installation of some testing files. 
+	- --directory : to specify the folder where you want the applicatio to be generated.
+	- --defaults : forces defualt Angular settings to be used.
+
