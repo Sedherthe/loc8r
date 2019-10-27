@@ -86,7 +86,7 @@ const homelist = (req, res) => {
 		qs : {
 			lng : 0.99,
 			lat : 51,
-			maxDistance : 200000
+			maxDistance : 200000000
 		}
 	};
 	request(requestOptions, (err, response, body) => {
@@ -111,16 +111,12 @@ const homelist = (req, res) => {
 	});
 };
 
-const getLocationInfo = (req, res, callBack) => {
-
-}
-
 const renderDetailPage = (req, res, location) => {
 	console.log("data received is", location);
 	console.log("id is ", location._id);
 	res.render('location-info', {
 			id : location._id,
-			link : `/location/${location._id}/review/new`,
+			link : `/location/${location._id}/review/`,
 			title: `${location.name} Location Info`,
 			name: location.name,
 			rating: location.rating,
@@ -139,6 +135,7 @@ const renderDetailPage = (req, res, location) => {
 };
 
 const showError = (req, res, statusCode) => {
+	console.log("Showing error");
 	let title = '';
 	let content = '';
 	if(statusCode===404){
@@ -153,6 +150,7 @@ const showError = (req, res, statusCode) => {
 }
 
 const locationInfo = (req, res) => {
+
 	const path = `/api/locations/${req.params.locationid}`;
 	const fullPath = apiOptions.server + path;
 	console.log(fullPath);
@@ -182,19 +180,83 @@ const locationInfo = (req, res) => {
 	});
 };
 
-const renderReviewForm = (req, res) => {
+const getLocationInfo = (req, res, callback) => {
+	const path = `/api/locations/${req.params.locationid}`;
+	console.log("loc id is ", req.params.locationid);
+	const fullPath = apiOptions.server + path;
+	const requestOptions = {
+		url : fullPath,
+		method : 'GET',
+		json : {},
+		qs : {}
+	};
+	request(requestOptions, (err, response, body) => {
+		
+		let data = body;
+		if(response.statusCode === 200){
+			data.coords = {
+				lng : body.coords[0],
+				lat : body.coords[1]
+			};
+			console.log("body is", body);
+			console.log("data is ", data);
+			callback(req, res, data);
+		} else {
+			showError(req, res, response.statusCode);
+		}
+	});
+};
+
+
+
+const renderReviewForm = (req, res, responseBody) => {
 	res.render('location-review-form',{
-		title : "Add Review",
+		title : `Review ${responseBody.name} on Loc8r`,
+		pageHeader: {
+			title : `Review ${responseBody.name}`,
+		}
 	});
 };
 
 const addReview = (req, res) => {
-	renderReviewForm(req, res);
+	console.log("into the add review ufnction");
+	getLocationInfo(req, res, (req, res, responseData) => {
+		renderReviewForm(req, res, responseData);
+	});
 	//	res.render('location-review-form', {title: "Add Review"});
 };
 
 const doAddReview = (req, res) => {
+	const locationid = req.params.locationid;
+	const path = `/api/locations/${locationid}/reviews`;
+	const fullPath = apiOptions.server + path;
+	const postData = {
+		author : req.body.name,
+		rating : parseInt(req.body.rating, 10),
+		reviewText : req.body.review
+	};
+	console.log("path is", fullPath);
 
+	const requestOptions = {
+		url : fullPath,
+		method : 'POST',
+		json : postData,
+		qs : {}
+	};
+	console.log("Form data is : ", postData);
+
+	if(!postData.author || !postData.rating || !postData.reviewText){
+		res.redirect(`/location/${locationid}/review/new?err=val`)
+	} else {
+		request(requestOptions, (err, response, body) => {
+			if (response.statusCode === 201) {
+				// is successful redirect him back to the location info page to show new rev
+				res.redirect(`/location/${req.params.locationid}`);
+			} else {
+				showError(req, res, response.statusCode);
+			}
+		});
+	}
 };
 
 module.exports = {

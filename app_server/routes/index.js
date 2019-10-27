@@ -18,4 +18,5 @@ router
 /* Others page */
 router.get('/about', ctrlOthers.about);
 
+
 module.exports = router;

@@ -3,10 +3,10 @@ extends layout
 block content
   .row.banner
     .col-12
-     h1 `Review ${`
+     h1 #{pageHeader.title}
   .row
-    .col-12.col-md-8
-      form(action='', method='post', role='form')
+    .col-12.col-md-9
+      form#addReview(action='', method='post', role='form')
         .row.form-group
           label.col-10.col-sm-2.col-form-label(for="name") Name
           .col-12.col-sm-10

@@ -45,7 +45,7 @@ const doAddReview = (req, res, location) => {
 		} else{
 			console.log("Location id is: ", location._id);
 			updateAverageRating(location._id);
-			console.log(location.reviews.slice[-1], "sliced review");
+			console.log(location.reviews.slice(-1), "sliced review");
 			const thisReview = location.reviews.slice(-1).pop();
 			return res
 				.status(201)

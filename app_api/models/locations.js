@@ -37,7 +37,7 @@ const reviewSchema = new mongoose.Schema({
 		max: 5,
 	},
 	reviewText: String,
-	createdOn: {
+	timestamp: {
 		type: Date,
 		'default': Date.now
 	}
