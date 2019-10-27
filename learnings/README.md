@@ -69,4 +69,13 @@ You see it by using the following command: `heroku open`
 	- --skipTests : To skip installation of some testing files. 
 	- --directory : to specify the folder where you want the applicatio to be generated.
 	- --defaults : forces defualt Angular settings to be used.
+- ng serve : Use this command to run the angular app. Don't forget to go to the location of your installation directory.
 
+## Updating the Angular Version
+
+##### Windows
+
+- Open your powershell on Administrator Mode
+- npm uninstall -g angular-cli
+- npm cache verify
+- 
